@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .menu-bar {
+            background-color: #333;
+        }
+        .menu-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .menu-bar li {
+            display: inline;
+        }
+        .menu-bar a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-bar">
+    <ul>
+        <li><a href="#" style="text-decoration: none;">Home</a></li>
+        <li><a href="#" style="text-decoration: none;">Search</a></li>
+        <li><a href="#" style="text-decoration: none;">About Us</a></li>
+        <li><a  style="text-decoration: none;">Signin</a></li>
+        <li><a  style="text-decoration: none;">Login</a></li>
+    </ul>
+</div>
+
+{% block content %}
+welcome,host<br>
+{{ user.username }},logged successfully
+<form method="POST" action="{% url 'user_logout' %}">
+    {% csrf_token %}
+    <input type="submit" value="Logout">
+</form>
+
+
+
+<h2>All Products</h2>
+
+<ul>
+    {% for product in products %}
+    <li>
+        <strong>Name:</strong> {{ product.name }}<br>
+        {% if product.picture %}
+        <img src="{{ product.picture.url }}" alt="{{ product.name }}" width="100"><br>
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+            <strong>Description:</strong> {{ product.description }}<br>
+        <strong>Price:</strong> ${{ product.price }}<br>
+        <a href="{% url 'product_detail' product.pk %}">Detail</a> |
+        <a href="{% url 'product_update' product.pk %}">Update</a> |
+        <a href="{% url 'product_delete' product.pk %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+
+<div class="sticky-button">
+<a href="{% url 'product_create' %}" style="text-decoration: none;">Add Product</a>
+</div>
+
+
+</body>
+</html>

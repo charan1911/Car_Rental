@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .product-info {
+            margin-bottom: 20px;
+        }
+        .product-info img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        .product-info p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Product Detail</h1>
+        <div class="product-info">
+            <img src="{{ product.picture.url }}" alt="{{ product.name }}">
+            <p><strong>Name:</strong> {{ product.name }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+        </div>
+        <form method="post" action="{% url 'Book_this_product' product.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" name="product_name" value="{{ product.name }}">
+            <input type="hidden" name="price" value="{{ product.price }}">
+            <button type="submit" class="btn btn-primary">Book</button>
+        </form>
+        
+        <a href="{% url 'go_back' %}" class="btn btn-primary">Back</a>
+    </div>
+</body>
+</html>

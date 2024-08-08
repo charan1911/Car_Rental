@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product Confirmation</title>
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Product Confirmation</h1>
+        <p>Are you sure you want to delete the product "{{ product.name }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Confirm Delete</button>
+            <a href="{% url 'product_list' %}">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

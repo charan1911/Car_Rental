@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .menu-bar {
+            background-color: #333;
+            display: flex;
+            justify-content: space-between; /* Align items at both ends */
+            padding: 10px;
+        }
+        .menu-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .menu-bar li {
+            margin-right: 20px;
+        }
+        .menu-bar a {
+            color: white;
+            text-decoration: none;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-bar">
+        <ul>
+            <li><a href="#" style="text-decoration: none;">Home</a></li>
+            <li><a href="#" style="text-decoration: none;">Search</a></li>
+            <li><a href="#" style="text-decoration: none;">About Us</a></li>
+        </ul>
+        <ul>
+            <li>
+                <form method="POST" action="{% url 'user_logout' %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div>
+            <h2>Welcome, {{ user.username }}</h2>
+            <p>You have logged in successfully.</p> 
+        </div>
+        <div>
+            <a href="{% url 'liked_products' %}" class="btn btn-primary">
+                <img src="{% static 'heartr.jpg' %}" alt="Heart" height="40px">
+            </a>
+
+            <a href="{% url 'Booking_products' %}" class="btn btn-primary">
+                <img src="{% static 'icons8-order-96.png' %}" alt="Heart" height="36px">
+            </a>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                <strong>Name:</strong> {{ product.name }}<br>
+                {% if product.picture %}
+                    <img src="{{ product.picture.url }}" alt="{{ product.name }}" width="100"><br>
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+                <strong>Description:</strong> {{ product.description }}<br>
+                <strong>Price:</strong> ${{ product.price }}<br>
+                <a href="{% url 'product_detail' product.pk %}">Detail</a> |
+                <a href="{% url 'like_this_product' product.pk %}">Like</a> |
+                {% for liked_product in liked_products %}
+                    {% if liked_product.product == product %}
+                        <img src="https://static-00.iconduck.com/assets.00/tick-circle-icon-512x511-tdqse5ra.png" height="16px">
+                    {% endif %}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

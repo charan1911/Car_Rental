@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .menu-bar {
+            background-color: #333;
+        }
+        .menu-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .menu-bar li {
+            display: inline;
+        }
+        .menu-bar a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-bar">
+    <ul>
+        <li><a href="#" style="text-decoration: none;">Home</a></li>
+        <li><a href="#" style="text-decoration: none;">Search</a></li>
+        <li><a href="#" style="text-decoration: none;">About Us</a></li>
+        <li><a href="{% url 'signin' %}" style="text-decoration: none;">Signin</a></li>
+<li><a href="{% url 'user_login' %}" style="text-decoration: none;">Login</a></li>
+
+    </ul>
+</div>
+
+
+
+</body>
+</html>
+
+<!--
+
+host username   :gumma123
+password        :gumma123
+.
+customer1       :a
+password        :a
+. 
+customer2       :b
+password        :b 
+. 
+customer3       :c 
+password        :c 
+
+-->

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liked Products</title>
+</head>
+<body>
+    <h1>Liked Products</h1>
+    <ul>
+    {% for liked_product in Bookings_products %}
+        <li>
+            <strong>Name:</strong> {{ liked_product.product.name }} <br>
+            <strong>Price:</strong> {{ liked_product.product.price }} <br>
+            {% if liked_product.product.picture %}
+                <img src="{{ liked_product.product.picture.url }}" alt="{{ liked_product.product.name }}" width="100">
+            {% else %}
+                No picture available
+            {% endif %}
+            
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
