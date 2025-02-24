@@ -28,16 +28,35 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import LikedProduct
 
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def sample_api(request):
+    return Response({"message": "Hello from Django!"})
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import LikedProduct  # Ensure your model is imported
+
 @login_required
 def liked_products(request):
-    # Get the default username (current logged-in user's username)
+    # Get the current logged-in user's username
     default_username = request.user.username
-    
+
     # Retrieve liked products associated with the user
     liked_products = LikedProduct.objects.filter(user=request.user)
-    
-    # Pass the liked products and default username to the template
-    return render(request, 'liked_products.html', {'liked_products': liked_products, 'default_username': default_username})
+
+    # Retrieve booked products for the user
+    booked_product_ids = Bookings.objects.filter(user=request.user).values_list('product_id', flat=True)
+
+    # Pass data to the template
+    return render(request, 'liked_products.html', {
+        'liked_products': liked_products,
+        'default_username': default_username,
+        'booked_product_ids': list(booked_product_ids),  # Convert to list for easy lookup in template
+    })
 
 
 
@@ -92,11 +111,26 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Bookings
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Bookings  # Ensure your model is imported
+
 @login_required
 def Bookings_products(request):
     default_username = request.user.username
+
+    # Retrieve bookings associated with the logged-in user
     user_bookings = Bookings.objects.filter(user=request.user)
-    return render(request, 'Booking_products.html', {'Bookings_products': user_bookings, 'default_username': default_username})
+
+    # Calculate total price of booked products
+    total_price = sum(booking.product.price for booking in user_bookings)  # ✅ Corrected
+
+    return render(request, 'Booking_products.html', {
+        'Bookings_products': user_bookings,
+        'default_username': default_username,
+        'total_price': total_price  # ✅ Returns total price correctly
+    })
+
 
 
 
@@ -145,25 +179,38 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'product_detail.html', {'product': product})
 
+from django.conf import settings
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'product_list.html', {'products': products, 'MEDIA_URL': settings.MEDIA_URL})
 
 
-@login_required(login_url='/login/')
+
 def product_create(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
+        picture = request.FILES.get('picture')  # Ensure file handling
+
         if not name or not description or not price:
             return HttpResponseBadRequest("Please provide all required fields.")
-        
-        picture = request.FILES.get('picture')
         if not picture:
             return HttpResponseBadRequest("Please provide a picture.")
 
-        Product.objects.create(name=name, description=description, price=price, picture=picture)
-        return redirect('user_success_g')
-    return render(request, 'product_form.html')
+        product = Product.objects.create(
+            name=name, 
+            description=description, 
+            price=price, 
+            picture=picture
+        )
 
+        print("Uploaded File Path:", product.picture.url)  # Debugging line
+
+        return redirect('product_detail', pk=product.pk)
+
+    return render(request, 'product_form.html')
 
 
 
@@ -304,11 +351,13 @@ def success_c(request):
     products = Product.objects.all()
     context['products'] = products
     
-    # Get the liked products associated with the current user
-    liked_products = LikedProduct.objects.filter(user=request.user)
-    context['liked_products'] = liked_products
+    # Get only the product objects liked by the user
+    liked_products = Product.objects.filter(id__in=LikedProduct.objects.filter(user=request.user).values_list('product_id', flat=True))
     
+    context['liked_products'] = liked_products  # Now contains Product objects
+
     return render(request, 'success_c.html', context)
+
 
 
 

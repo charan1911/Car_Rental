@@ -3,23 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liked Products</title>
+    
 </head>
 <body>
-    <h1>Liked Products</h1>
-    <ul>
-    {% for liked_product in liked_products %}
-        <li>
-            <strong>Name:</strong> {{ liked_product.product.name }} <br>
-            <strong>Price:</strong> {{ liked_product.product.price }} <br>
-            {% if liked_product.product.picture %}
-                <img src="{{ liked_product.product.picture.url }}" alt="{{ liked_product.product.name }}" width="100">
-            {% else %}
-                No picture available
-            {% endif %}
-            
-        </li>
-    {% endfor %}
-    </ul>
+    <h1 style="font-family: Arial, sans-serif; font-size: 24px; font-weight: 500; color: #333; margin-bottom: 10px;">
+        Liked Product
+    </h1>
+    
+    {% for product in liked_products %}
+    <li>
+        <strong>Name:</strong> {{ product.product.name }} <br>
+        <strong>Price:</strong> {{ product.product.price }} <br>
+
+        {% if product.product.picture %}
+            <img src="{{ product.product.picture.url }}" alt="{{ product.product.name }}" width="100">
+        {% else %}
+            No picture available
+        {% endif %}
+
+        <!-- ✅ Change button based on booking status -->
+        {% if product.product.id in booked_product_ids %}
+            <button style="font-family: Arial, sans-serif; font-size: 15px; font-weight: 500; color: white; background-color: gray; border: none; padding: 8px 16px; border-radius: 5px; cursor: not-allowed;">
+                Added
+            </button>
+        {% else %}
+            <form method="post" action="{% url 'Book_this_product' product.product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="hidden" name="product_name" value="{{ product.product.name }}">
+                <input type="hidden" name="price" value="{{ product.product.price }}">
+                <button type="submit" class="btn btn-primary">
+                    Add to Cart
+                </button>
+            </form>
+        {% endif %}
+    </li>
+{% endfor %}
+
+    <a href="{% url 'Booking_products' %}" 
+   style="font-family: Arial, sans-serif; display: inline-block; padding: 12px 24px; font-size: 18px; font-weight: bold; 
+          text-decoration: none; color: white; background-color: #222; 
+          border-radius: 30px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+          transition: all 0.3s ease-in-out; text-transform: uppercase; letter-spacing: 1px;">
+   Go to Cart
+</a>
+<a href="{% url 'user_success_c' %}" 
+   style="font-family: Arial, sans-serif; display: inline-block; padding: 12px 24px; font-size: 18px; font-weight: bold; 
+          text-decoration: none; color: white; background-color: #222; 
+          border-radius: 30px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+          transition: all 0.3s ease-in-out; text-transform: uppercase; letter-spacing: 1px;">
+    Home 
+</a>
+
+    
+    
+    
+    <!-- {% for product in liked_products %}
+    <form method="post" action="{% url 'Book_this_product' product.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" name="product_name" value="{{ product.name }}">
+            <input type="hidden" name="price" value="{{ product.price }}">
+            <button type="submit" class="btn btn-primary">Book</button>
+    </form>
+    {% endfor %} -->
 </body>
 </html>

@@ -3,23 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liked Products</title>
+    
 </head>
 <body>
-    <h1>Liked Products</h1>
+    <h1 style="font-family: Arial, sans-serif; font-size: 24px; font-weight: 500; color: #333; margin-bottom: 10px;">
+        Cart
+    </h1>
     <ul>
-    {% for liked_product in Bookings_products %}
-        <li>
-            <strong>Name:</strong> {{ liked_product.product.name }} <br>
-            <strong>Price:</strong> {{ liked_product.product.price }} <br>
-            {% if liked_product.product.picture %}
-                <img src="{{ liked_product.product.picture.url }}" alt="{{ liked_product.product.name }}" width="100">
-            {% else %}
-                No picture available
-            {% endif %}
-            
-        </li>
-    {% endfor %}
-    </ul>
+        <ul id="productList">
+            {% for liked_product in Bookings_products %}
+                <li>
+                    
+                    
+                    <!-- Product Image -->
+                    {% if liked_product.product.picture %}
+                        <img src="{{ liked_product.product.picture.url }}" alt="{{ liked_product.product.name }}" width="100"><br>
+                    {% else %}
+                        No picture available
+                    {% endif %}
+                    
+                    <!-- Quantity Selector -->
+                    <li class="product-item" data-id="{{ liked_product.product.id }}">
+                        <strong>Name:</strong> {{ liked_product.product.name }} <br>
+                        <strong>Price: ₹</strong> <span class="price" data-price="{{ liked_product.product.price }}">{{ liked_product.product.price }}</span> <br>
+                        
+                        <button onclick="changeQuantity(this, -1)">-</button>
+                        <span class="quantity">1</span>
+                        <button onclick="changeQuantity(this, 1)">+</button>
+                        
+                        <strong>Subtotal: ₹</strong> <span class="subtotal">{{ liked_product.product.price }}</span> <br>
+                    </li>
+                    
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+        
+        <!-- Grand Total -->
+        <h3>Total Price: ₹<span id="total_price">0.00</span></h3>
+
+        
+        
+    <a href="{% url 'user_success_c' %}" 
+   style="font-family: Arial, sans-serif; display: inline-block; padding: 12px 24px; font-size: 18px; font-weight: bold; 
+          text-decoration: none; color: white; background-color: #222; 
+          border-radius: 30px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+          transition: all 0.3s ease-in-out; text-transform: uppercase; letter-spacing: 1px;">
+    Home 
+</a>
+<a id="whatsappLink" href="#" target="_blank"
+   style="font-family: Arial, sans-serif; display: inline-block; padding: 12px 24px; font-size: 18px; font-weight: bold; 
+          text-decoration: none; color: white; background-color: #25D366; 
+          border-radius: 30px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+          transition: all 0.3s ease-in-out; text-transform: uppercase; letter-spacing: 1px;">
+    Send to WhatsApp
+</a>
 </body>
+<script>
+
+
+function sendToWhatsApp() {
+    let phoneNumber = "919550591701"; // Replace with the actual WhatsApp number
+    let cartDetails = "";
+
+    document.querySelectorAll(".product-item").forEach((item) => {
+        let name = item.querySelector(".price").previousElementSibling.textContent.trim();
+        let qty = item.querySelector(".quantity").innerText;
+        let price = item.querySelector(".price").dataset.price;
+        let subtotal = item.querySelector(".subtotal").innerText;
+        
+        cartDetails += `🛒 *${name}* \n🔢 Units: ${qty} \n💰 Price: ₹${price} \n🟢 Subtotal: ₹${subtotal}\n\n`;
+    });
+
+    let totalPrice = document.getElementById("total_price").innerText;
+    let message = `📦 *Cart Summary* \n\n${cartDetails}🟡 *Total Price: ₹${totalPrice}*`;
+
+    let encodedMessage = encodeURIComponent(message);
+    let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    document.getElementById("whatsappLink").href = whatsappURL;
+}
+
+document.getElementById("whatsappLink").addEventListener("click", sendToWhatsApp);
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let storedQuantities = JSON.parse(localStorage.getItem("quantities")) || {};
+    
+        document.querySelectorAll(".product-item").forEach((item) => {
+            let productId = item.dataset.id;
+            let qty = item.querySelector(".quantity");
+            let subtotal = item.querySelector(".subtotal");
+            let price = parseFloat(item.querySelector(".price").dataset.price);
+    
+            // Restore saved quantity
+            let savedQty = storedQuantities[productId] || 1;
+            qty.innerText = savedQty;
+            subtotal.innerText = (savedQty * price).toFixed(2);
+        });
+    
+        updateTotal();
+    });
+    
+    function changeQuantity(btn, change) {
+        let item = btn.closest(".product-item");
+        let productId = item.dataset.id;
+        let qty = item.querySelector(".quantity");
+        let price = parseFloat(item.querySelector(".price").dataset.price);
+        let subtotal = item.querySelector(".subtotal");
+    
+        let newQty = Math.max(1, (parseInt(qty.innerText) || 1) + change);
+        qty.innerText = newQty;
+        subtotal.innerText = (newQty * price).toFixed(2);
+    
+        // Store updated quantity
+        let storedQuantities = JSON.parse(localStorage.getItem("quantities")) || {};
+        storedQuantities[productId] = newQty;
+        localStorage.setItem("quantities", JSON.stringify(storedQuantities));
+    
+        updateTotal();
+    }
+    
+    function updateTotal() {
+        let total = [...document.querySelectorAll(".subtotal")]
+            .reduce((sum, el) => sum + parseFloat(el.innerText), 0);
+        document.getElementById("total_price").innerText = total.toFixed(2);
+    }
+    </script>
+    
+    
 </html>

@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, reverse  # Import reverse function
 from django.urls import include
 from .views import basee, signin, user_login, success_g, success_c, user_logout  # Import individual views
-
+from django.conf import settings
+from django.conf.urls.static import static
 '''
 urlpatterns = [
     # plain front page----------------
@@ -32,8 +33,13 @@ from .views import liked_products
 from .views import Bookings_products
 from .views import Book_this_product
 
+from .views import sample_api
+
 
 urlpatterns = [
+
+    path('api/', sample_api),  # URL for React to fetch data
+
     path('',basee,name='basee'),
     path('basee/', basee, name='basee'),
     path('signin/', signin, name='signin'),
@@ -44,8 +50,8 @@ urlpatterns = [
     path('product/<int:pk>/', product_detail, name='product_detail'),  # Add product_detail URL pattern
     path('product/<int:pk>/update/', product_update, name='product_update'),  # Define the URL pattern for product_update view
     #path('product/<int:pk>/delete/', product_delete, name='product_delete'),  # Define the URL pattern for product_delete view
-    path('product/create/', product_create, name='product_create'),  # Define the URL pattern for product_create view
-    path('product/<int:pk>/delete/', product_delete, name='product_delete'),
+path('product/create/', product_create, name='product_create'),  
+  path('product/<int:pk>/delete/', product_delete, name='product_delete'),
     path('product/list/', product_list, name='product_list'),
     path('go-back/', user_go_back, name='go_back'),
     path('success/', success_c, name='success_c'),
@@ -57,3 +63,5 @@ urlpatterns = [
 
 
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,7 +25,23 @@ SECRET_KEY = 'django-insecure-9&5b^xbr=y6wx_kncnta68hq-ba-k!3vk5^rom%9y12v!obc^#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "192.168.29.112",  # Add your local IP
+    ".ngrok-free.app",  # Allow all ngrok subdomains
+]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://2b6c-2405-201-c02c-315e-3ce6-49f2-390d-73d1.ngrok-free.app",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+
+
+
 
 
 # Application definition
@@ -38,6 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'loginout0',
+    'rest_framework',# Enables Django REST API functionality
+    'corsheaders', # Allows React to communicate with Django
+
 ]
 
 MIDDLEWARE = [
@@ -48,9 +67,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Handles CORS issues
+
 ]
 
 ROOT_URLCONF = 'loginout.urls'
+
+# Allow React (localhost:3000 or 5173) to access Django API
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React running in development mode
+    "http://localhost:5173"   # Vite (if used)
+]
 
 TEMPLATES = [
     {
@@ -116,16 +143,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+import os
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_ROOT = os.path.join(BASE_DIR,'assets')
-
-MEDIA_URL ='/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
