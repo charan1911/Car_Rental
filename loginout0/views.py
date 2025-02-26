@@ -265,8 +265,16 @@ def product_delete(request, pk):
 
 
 
+from django.utils import timezone
+from datetime import timedelta
+from django.shortcuts import render
+from .models import Product
+
 def basee(request):
-    return render(request,"basee.html")
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    products = Product.objects.filter(created_at__gte=seven_days_ago)  # Fetch last 7 days' products
+    return render(request, "basee.html", {'products': products})
+
 
 '''
 

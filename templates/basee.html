@@ -9,21 +9,36 @@
 
     
     <script>
-        function toggleSearch(expand) {
-            const input = document.getElementById("search-input");
-            if (expand) {
-                input.classList.add("lg:w-64", "opacity-100");
-                input.classList.remove("md:w-32", "opacity-70");
-            } else {
-                input.classList.add("md:w-32", "opacity-70");
-                input.classList.remove("lg:w-64", "opacity-100");
-            }
-        }
+        
 
         function toggleMenu() {
             document.getElementById("mobile-menu").classList.toggle("hidden");
         }
+
+        
     </script>
+
+    <style>
+         /* Custom Styling */
+         .about-us {
+            
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .about-box {
+            background-color: bisque;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 20px rgba(23, 23, 23, 0.15);
+            width: 300px;
+            text-align: center;
+        }
+
+        
+    </style>
 </head>
 <body class="bg-white">
 
@@ -43,48 +58,201 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
-                    <a href="{% url 'signin' %}" style="margin-right: -5%; color: rgb(255, 255, 255);font-weight: lighter; background-color: rgb(8, 134, 139); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
+                    <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+                    <a href="{% url 'signin' %}" style=" color: rgb(0, 0, 0);font-weight:normal; background-color: rgb(255, 106, 0); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
                         Signin
                     </a>                    
-                    <a href="{% url 'user_login' %}" style="color: rgb(255, 255, 255);font-weight: lighter;; background-color: rgb(8, 134, 139); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
+                    <a href="{% url 'user_login' %}" style="color: rgb(0, 0, 0);font-weight: normal;; background-color: rgb(255, 106, 0); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
                         Login
                     </a>
                 </div>
                 
 
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden focus:outline-none" onclick="toggleMenu()">
-                    <svg class="h-6 w-6 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
+                <button id="menu-toggle" class="md:hidden p-2 text-black">
+                    ☰
                 </button>
+                
             </div>
-            <h1 style="color: black;"> Booking_Products.html </h1>
         </div>
+
+        <!-- Menu Button -->
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4">
-            <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium py-2">Home</a>
-            <a href="{% url 'signin' %}" class="block text-slate-600 hover:text-blue-600 font-medium py-2">Signin</a>
-            <a href="{% url 'user_login' %}"  style="background-color: cadetblue; border-radius: 10px;padding: 10px;" >
-                Login
-            </a>
-        </div>
+<div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 transition-transform transform -translate-y-full opacity-0">
+    <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium py-2">Home</a>
+    <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium py-2">About Us</a>
+
+    <div class="flex gap-2 mt-2">
+        <a href="{% url 'signin' %}" class="text-black font-normal bg-orange-500 rounded-lg px-4 py-2">
+            Signin
+        </a>
+        <a href="{% url 'user_login' %}" class="text-black font-normal bg-orange-500 rounded-lg px-4 py-2">
+            Login
+        </a>
+    </div>
+</div>
+
+        <!-- JavaScript -->
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        let menu = document.getElementById("mobile-menu");
+        if (menu.classList.contains("hidden")) {
+            menu.classList.remove("hidden");
+            setTimeout(() => {
+                menu.classList.remove("-translate-y-full", "opacity-0");
+                menu.classList.add("translate-y-0", "opacity-100");
+            }, 10);
+        } else {
+            menu.classList.remove("translate-y-0", "opacity-100");
+            menu.classList.add("-translate-y-full", "opacity-0");
+            setTimeout(() => {
+                menu.classList.add("hidden");
+            }, 300); // Wait for animation to finish
+        }
+    });
+</script>
+        
     </nav>
     <!-- <hr style="width: 100%; height: 1px; background-color: rgba(0, 0, 0, 0.25); border: none;"> -->
-    <div style="display: flex; ">
-        <img  style="margin-top: -12%;" src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
-     alt="Car Wallpaper" 
-     class="clipped-image">
-     <!-- <div style="; position: absolute; padding-left: 20px;padding-top: 20px;font-family :system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;" >
-        <h6 >  Lamborghini-3840x2160-11125</h6>
-     </div> -->
-    </div>
-    <h1 style="color: black;"> Booking_Products.html </h1>
+    <div style="background-color:rgb(255, 255, 255);">
+        
+        <div style="display: flex; ">
+            <img  style="margin-top: -12%; filter: brightness(90%);" src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
+         alt="Car Wallpaper" 
+         class="clipped-image">
+         <h6 style="
+    
+    margin-top: 15%;
+    margin-left: 10%;
+    font-size: small;
+    position: absolute;
+    color: aliceblue;
+    font-weight: bolder;
+    
+    
+">
+    <code>Life’s a journey—your car makes it smooth.</code>
+</h6>
 
-    <footer style="margin-top: -9%; background: #171717; color: #ffffff; text-align: center; padding: 10px; font-size: 14px;">
-        <p>&copy; 2025 AutoRent | All rights reserved.</p>
+        </div>
+        <!-- About Us Section -->
+        <div class="text-center" style="margin-top: -5%;">
+            <h2 class="text-3xl font-bold" style="color: rgb(0, 0, 0);">About Us</h2>
+            <p class="text-gray-600" style="color: rgba(0, 0, 0, 0.738);">We provide secure, safe deals with users.</p>
+        </div>
+        
+        <div class="about-us p-6 space-y-6 text-center">
+            <div  class="about-box p-6 rounded-lg shadow-md w-full flex items-center gap-4" style="background-color: rgba(255, 106, 0, 0.100);">
+                <!-- Image Section -->
+                <img src="/static/images/premium.png" class="w-16 h-16 object-contain" alt="Luxury Cars">
+                
+                <!-- Text Section -->
+                <div >
+                    <h1  class="text-xl font-semibold text-gray-1000">Luxury Cars</h1>
+                    <p class="text-gray-700 mt-1">Experience premium luxury with exceptional comfort and style.</p>
+                </div>
+            </div>
+
+            <div class="about-box  p-6 rounded-lg shadow-md w-full flex items-center gap-4"    style="background-color: rgba(255, 106, 0, 0.100);">
+                <!-- Image Section -->
+                <img src="/static/images/hands.png" class="w-16 h-16 object-contain" alt="Luxury Cars">
+                
+                <!-- Text Section -->
+                <div >
+                    <h1 class="text-xl font-semibold text-gray-1000">Luxury Cars</h1>
+                <p class="text-gray-700 mt-2">Experience premium luxury with exceptional comfort and style.</p>
+                </div>
+            </div>
+
+            <div class="about-box  p-6 rounded-lg shadow-md w-full flex items-center gap-4" style="background-color: rgba(255, 106, 0, 0.100);">
+                <!-- Image Section -->
+                <img src="/static/images/24-hours.png" class="w-16 h-16 object-contain" alt="Luxury Cars"  >
+                
+                <!-- Text Section -->
+                <div >
+                    <h1 class="text-xl font-semibold text-gray-1000">24/7 Support</h1>
+                    <p class="text-gray-700 mt-2">We are available around the clock to assist you.</p>
+                </div>
+            </div>
+            
+            
+            
+            
+           
+        </div>
+    </div>
+    
+    
+    
+
+
+    
+    
+    
+    
+
+    <footer style="background-color: #ffffff; color: #000000; padding: 40px 20px; font-family: Arial, sans-serif;">
+        <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-between; padding: 10px;">
+            <!-- Left Section -->
+            <div style="flex: 1; min-width: 250px; padding: 10px;">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <svg class="h-12 w-12 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span class="font-semibold text-slate-800" style="font-size: 20px;" onclick="showError()">AutoRent</span>
+                </div>
+                <p style="margin-top: 10px;" onclick="showError()">For a better experience, download the AutoRent app now.</p>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <img src="/static/images/google-play.png" alt="Download on Google Play" style="height: 50px;" onclick="showError()">
+                    <img src="/static/images/app-store.png" alt="Download on App Store" style="height: 50px;" onclick="showError()">
+                </div>
+            </div>
+    
+            <!-- Middle Section -->
+            <div style="flex: 1; min-width: 250px;">
+                <p>&nbsp;</p>
+                <h3><b onclick="showError()">Company</b></h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Team</h3></li>
+                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">About Us</h3></li>
+                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Corporate</h3></li>
+                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Help & Support</h3></li>
+                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Partner with Us</h3></li>
+                </ul>
+            </div>
+    
+            <!-- Right Section -->
+            <div style="flex: 1; min-width: 250px;">
+                <p>&nbsp;</p>
+                <h4><b onclick="showError()">Available Locations</b></h4>
+                <p onclick="showError()">Miyapur, KPHB</p>
+                <h4 onclick="showError()">Follow Us</h4>
+                <!-- Social Media Links -->
+                <div style="display: flex; justify-content: left; gap: 18px; margin-top: 8px; margin-bottom: 20px;">
+                    <img src="/static/images/instagram.png" alt="Instagram" style="width: 30px;" onclick="showError()">
+                    <img src="/static/images/linkedin.png" alt="LinkedIn" style="width: 30px;" onclick="showError()">
+                    <img src="/static/images/facebook.png" alt="Facebook" style="width: 30px;" onclick="showError()">
+                    <img src="/static/images/twitter.png" alt="Twitter" style="width: 30px;" onclick="showError()">
+                </div>
+            </div>
+        </div>
+    
+        <!-- Copyright Section -->
+        <div style="text-align: center; margin-top: 20px; font-size: 14px;" onclick="showError()">
+            &copy; 2025 AutoRent Limited. All rights reserved.
+        </div>
     </footer>
+    
+    <!-- JavaScript for Error Message -->
+    <script>
+        function showError() {
+            alert("Currently not available");
+        }
+    </script>
+    
+    
     
     
      
@@ -110,3 +278,133 @@
 
 </body>
 </html>
+
+
+<!-- 
+<div style="overflow-x: hidden; background-color: #000000; height: auto; padding: 20px;">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    
+    <div class="swiper-container" style="max-width: 1400px; margin: auto; position: relative;">
+        
+        <div class="swiper-wrapper">
+            {% for product in products %}
+                <div class="swiper-slide">
+                    <div class="product-box">
+                        <h3>{{ product.name }}</h3>
+                        <img src="{{ product.picture.url }}" alt="{{ product.name }}">
+                        <p>Price: ${{ product.price }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="color: white; text-align: center;">No recent products added.</p>
+            {% endfor %}
+        </div>
+
+        
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+
+    
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 15,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            allowTouchMove: true,
+            breakpoints: {
+                1400: { slidesPerView: 3 },
+                992: { slidesPerView: 2 },
+                768: { slidesPerView: 1, spaceBetween: 10 },
+                480: { slidesPerView: 1, spaceBetween: 5 },
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper-container {
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .swiper-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .product-box {
+            background-color: rgba(255, 255, 255, 0.168);
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 350px;
+            height: 400px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-box img {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .product-box h3, .product-box p {
+            color: white;
+        }
+        .swiper-button-prev, .swiper-button-next {
+            background-color: rgba(92, 92, 92, 0.8);
+            padding: 15px;
+            border-radius: 50%;
+            color: white;
+        }
+        .luxury-quote {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            width: 80%;
+        }
+        @media (max-width: 768px) {
+            .product-box {
+                width: 100%;
+                max-width: 90%;
+            }
+        }
+    </style>
+
+    <div style="position: relative; text-align: center;">
+        <img style="width: 100%; filter: brightness(90%);" src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" alt="Luxury Car">
+        <div class="luxury-quote">"Luxury is not a necessity, it is a statement."</div>
+    </div>
+</div>
+
+-->

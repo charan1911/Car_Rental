@@ -71,7 +71,7 @@
             border-radius: 6px;
             font-size: 15px;
             font-weight: 500;
-            background: #222;
+            background-color: rgb(255, 106, 0);
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -139,6 +139,28 @@ a:active {
 
             <p class="error-message">{{error}}</p>
         </form>
+        <a href="{% url 'basee' %}" style="
+        display: inline-block;
+        background-color: #111; 
+        color: #fff; 
+        font-size: 18px; 
+        font-weight: bold; 
+        padding: 12px 24px; 
+        border: 2px solid #222; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-decoration: none; /* Removes underline */
+    "
+    onmouseover="this.style.backgroundColor='#222'; this.style.transform='scale(1.05)';"
+    onmouseout="this.style.backgroundColor='#111'; this.style.transform='scale(1)';">
+        HOME
+    </a>
+    
+
     </div>
 
 </body>
