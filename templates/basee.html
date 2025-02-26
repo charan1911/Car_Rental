@@ -117,25 +117,33 @@
     <!-- <hr style="width: 100%; height: 1px; background-color: rgba(0, 0, 0, 0.25); border: none;"> -->
     <div style="background-color:rgb(255, 255, 255);">
         
-        <div style="display: flex; ">
-            <img  style="margin-top: -12%; filter: brightness(90%);" src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
-         alt="Car Wallpaper" 
-         class="clipped-image">
-         <h6 style="
-    
-    margin-top: 15%;
-    margin-left: 10%;
-    font-size: small;
-    position: absolute;
-    color: aliceblue;
-    font-weight: bolder;
-    
-    
-">
-    <code>Life’s a journey—your car makes it smooth.</code>
-</h6>
-
+        <div style="margin-top: -11%; position: relative; display: flex; justify-content: center; align-items: center;">
+            <img style="width: 100%; height: auto; filter: brightness(90%);" 
+                 src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
+                 alt="Car Wallpaper" 
+                 class="clipped-image">
+            
+            <a href="#" style="
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: small;
+                color: white;
+                font-weight: bold;
+                background-color: #ff6600;
+                padding: 20px 30px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                text-transform: uppercase;
+                text-decoration: none;
+                display: inline-block;
+            ">
+                Explore
+            </a>
         </div>
+        
         <!-- About Us Section -->
         <div class="text-center" style="margin-top: -5%;">
             <h2 class="text-3xl font-bold" style="color: rgb(0, 0, 0);">About Us</h2>
@@ -181,6 +189,83 @@
             
            
         </div>
+    </div>
+
+    <div class="text-center" style="margin-top: 0%;">
+        <h2 class="text-3xl font-bold" style="color: rgb(0, 0, 0);">Recently Launched</h2>
+        <p class="text-gray-600" style="color: rgba(0, 0, 0, 0.738);">Secure, seamless deals—our latest launch redefines trust!</p>
+    </div>
+    
+    <div style="overflow-x: hidden; background-color: #ffffff; height: auto; padding: 20px;">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+        <div class="swiper-container" style="max-width: 1400px; margin: auto; position: relative;">
+            <div class="swiper-wrapper">
+                {% for product in products %}
+                    <div class="swiper-slide" style="width: 280px; margin-right: 10px;">
+                        <div style="background-color: rgba(0, 0, 0, 0.064); border-radius: 8px; padding: 15px; text-align: center;">
+                            <h3>{{ product.name }}</h3>
+                            <img src="{{ product.picture.url }}" alt="{{ product.name }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                            <p>Price: ${{ product.price }}</p>
+                            <button style="background-color: rgb(255, 106, 0); color: white; padding: 10px; border: none; border-radius: 5px; cursor: not-allowed;" disabled>
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p style="color: black; text-align: center;">No recent products added.</p>
+                {% endfor %}
+            </div>
+    
+            <!-- Navigation Buttons -->
+            <button class="nav-btn swiper-button-prev"></button>
+            <button class="nav-btn swiper-button-next"></button>
+    
+            <style>
+                .nav-btn {
+                    width: 60px;
+                    height: 60px;
+                    background-color: #ffffff; /* Dark premium color */
+                    border: none;
+                    border-radius: 6px; /* Slight rounding */
+                    color: #000000;
+                    font-size: 18px;
+                    font-weight: bold;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 10;
+                    user-select: none;
+                }
+    
+                .swiper-button-prev {
+                    left: 10px;
+                }
+    
+                .swiper-button-next {
+                    right: 10px;
+                }
+            </style>
+        </div>
+    
+        <script>
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: "auto",
+                spaceBetween: 10,  // 10px gap
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                loop: false
+            });
+        </script>
+    
     </div>
     
     
@@ -246,11 +331,7 @@
     </footer>
     
     <!-- JavaScript for Error Message -->
-    <script>
-        function showError() {
-            alert("Currently not available");
-        }
-    </script>
+    
     
     
     
@@ -280,131 +361,5 @@
 </html>
 
 
-<!-- 
-<div style="overflow-x: hidden; background-color: #000000; height: auto; padding: 20px;">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    
-    <div class="swiper-container" style="max-width: 1400px; margin: auto; position: relative;">
-        
-        <div class="swiper-wrapper">
-            {% for product in products %}
-                <div class="swiper-slide">
-                    <div class="product-box">
-                        <h3>{{ product.name }}</h3>
-                        <img src="{{ product.picture.url }}" alt="{{ product.name }}">
-                        <p>Price: ${{ product.price }}</p>
-                    </div>
-                </div>
-            {% empty %}
-                <p style="color: white; text-align: center;">No recent products added.</p>
-            {% endfor %}
-        </div>
 
-        
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-
-    
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 3,
-            spaceBetween: 15,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            allowTouchMove: true,
-            breakpoints: {
-                1400: { slidesPerView: 3 },
-                992: { slidesPerView: 2 },
-                768: { slidesPerView: 1, spaceBetween: 10 },
-                480: { slidesPerView: 1, spaceBetween: 5 },
-            }
-        });
-    </script>
-
-    <style>
-        body {
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        .swiper-container {
-            max-width: 100%;
-            overflow: hidden;
-        }
-        .swiper-wrapper {
-            display: flex;
-            align-items: center;
-        }
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-        .product-box {
-            background-color: rgba(255, 255, 255, 0.168);
-            border-radius: 10px;
-            padding: 20px;
-            width: 90%;
-            max-width: 350px;
-            height: 400px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-box img {
-            width: 100%;
-            max-width: 300px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .product-box h3, .product-box p {
-            color: white;
-        }
-        .swiper-button-prev, .swiper-button-next {
-            background-color: rgba(92, 92, 92, 0.8);
-            padding: 15px;
-            border-radius: 50%;
-            color: white;
-        }
-        .luxury-quote {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            width: 80%;
-        }
-        @media (max-width: 768px) {
-            .product-box {
-                width: 100%;
-                max-width: 90%;
-            }
-        }
-    </style>
-
-    <div style="position: relative; text-align: center;">
-        <img style="width: 100%; filter: brightness(90%);" src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" alt="Luxury Car">
-        <div class="luxury-quote">"Luxury is not a necessity, it is a statement."</div>
-    </div>
-</div>
-
--->
