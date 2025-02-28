@@ -1,0 +1,74 @@
+<!-- ✅ Responsive Navigation Bar -->
+<nav class="bg-white border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center">
+                <svg class="h-6 w-6 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="font-semibold text-xl text-slate-800">AutoRent</span>
+            </div>
+
+            <!-- ✅ Mobile Menu Button -->
+            <button id="menu-btn" class="block md:hidden">
+                <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- ✅ Desktop Menu -->
+            <div id="menu" class="hidden md:flex items-center space-x-6">
+                <a href="{% url 'basee' %}" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
+                <a href="#about-us" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.querySelectorAll('a[href="#about-us"]').forEach(link => {
+                            link.addEventListener('click', function (event) {
+                                event.preventDefault(); // Prevent default jump
+                                document.querySelector('#about-us').scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            });
+                        });
+                    });
+                </script>
+                
+                
+                <a href="{% url 'signin' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg  no-underline">SignIn</a>
+                <a href="{% url 'user_login' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg  no-underline">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 p-4 space-y-2">
+        <a href="{% url 'basee' %}" class="block text-slate-600 hover:text-blue-600 font-medium">Home</a>
+        <a href="#about-us" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('a[href="#about-us"]').forEach(link => {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault(); // Prevent default jump
+                        document.querySelector('#about-us').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    });
+                });
+            });
+            
+
+
+        </script>
+        
+        <a href="{% url 'signin' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg ">SignIn</a>
+        <a href="{% url 'user_login' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg ">Login</a>
+    </div>
+</nav>
+
+<script>
+    document.getElementById('menu-btn').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>

@@ -301,8 +301,8 @@ def signin(request):
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 
 def signin(request):
     if request.method == 'POST':
@@ -312,32 +312,26 @@ def signin(request):
 
         # Check if the passwords match
         if password != confirm_password:
-            return HttpResponse('Password and confirm password do not match.', status=400)
+            return JsonResponse({'error': 'Passwords do not match!'}, status=400)
 
-        # Check if the user exists in the database
+        # Check if the user already exists
         if User.objects.filter(username=username).exists():
-            # Authenticate user
-            user = authenticate(username=username, password=password)
+            return JsonResponse({'error': 'User already exists!'}, status=400)
 
-            if user is not None:
-                # User authenticated successfully, redirect to base.html
-                return redirect('basee')  # Assuming 'base' is the name of the URL pattern for 'base.html'
-            else:
-                # Password is incorrect
-                return HttpResponse('Incorrect password. Please try again.', status=401)
-        else:
-            # Create a new user
-            User.objects.create_user(username=username, password=password)
-            # Authenticate the newly created user
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                # User authenticated successfully, redirect to base.html
-                return redirect('basee')  # Assuming 'base' is the name of the URL pattern for 'base.html'
-            else:
-                # Something went wrong with authentication
-                return HttpResponse('Unable to authenticate user.', status=500)
+        # Create a new user
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        # Authenticate and log in the user
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return JsonResponse({'success': True, 'redirect_url': '/basee'})  # Redirect on success
+
+        return JsonResponse({'error': 'Something went wrong!'}, status=500)
 
     return render(request, 'signin.html')
+
 
 
 """@login_required(login_url='/login/')
