@@ -6,9 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AutoRent{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         .about-us {
             gap: 20px;
             padding: 20px;
@@ -81,10 +90,25 @@
 
                 <!-- ✅ Desktop Menu -->
                 <div id="menu" class="hidden md:flex items-center space-x-6">
-                    <a href="login.html" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
-                    <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
-                    <a href="{% url 'signin' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase no-underline">SignIn</a>
-                    <a href="{% url 'user_login' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase no-underline">Login</a>
+                    <a href="{% url 'basee' %}" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#about-us" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            document.querySelectorAll('a[href="#about-us"]').forEach(link => {
+                                link.addEventListener('click', function (event) {
+                                    event.preventDefault(); // Prevent default jump
+                                    document.querySelector('#about-us').scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                });
+                            });
+                        });
+                    </script>
+                    
+                    
+                    <a href="{% url 'signin' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg  no-underline">SignIn</a>
+                    <a href="{% url 'user_login' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg  no-underline">Login</a>
                 </div>
             </div>
         </div>
@@ -92,9 +116,26 @@
         <!-- ✅ Mobile Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 p-4 space-y-2">
             <a href="login.html" class="block text-slate-600 hover:text-blue-600 font-medium">Home</a>
-            <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium">About Us</a>
-            <a href="{% url 'signin' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg uppercase">SignIn</a>
-            <a href="{% url 'user_login' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg uppercase">Login</a>
+            <a href="#about-us" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.querySelectorAll('a[href="#about-us"]').forEach(link => {
+                        link.addEventListener('click', function (event) {
+                            event.preventDefault(); // Prevent default jump
+                            document.querySelector('#about-us').scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        });
+                    });
+                });
+                
+
+
+            </script>
+            
+            <a href="{% url 'signin' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg ">SignIn</a>
+            <a href="{% url 'user_login' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg ">Login</a>
         </div>
     </nav>
 
@@ -106,11 +147,12 @@
         <a href="#" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase">Explore</a>
     </div>
 
-    <!-- ✅ About Us Section -->
-    <div class="text-center py-8 px-4">
-        <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
-        <p class="text-gray-600">We provide secure, safe deals with users.</p>
-    </div>
+   <!-- ✅ About Us Section -->
+<div id="about-us" class="text-center py-8 px-4">
+    <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
+    <p class="text-gray-600">We provide secure, safe deals with users.</p>
+</div>
+
 
     <!-- ✅ Features Section -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 text-center">
@@ -165,26 +207,202 @@
                 
             </button>
         </div>
+        <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var swiper = new Swiper(".swiper-container", {
+           
+            spaceBetween: 20,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+            },
+            on: {
+                init: function () {
+                    updateNavButtons(this);
+                },
+                slideChange: function () {
+                    updateNavButtons(this);
+                }
+            }
+        });
+
+        function updateNavButtons(swiper) {
+            const prevButton = document.querySelector(".swiper-button-prev");
+            const nextButton = document.querySelector(".swiper-button-next");
+
+            if (swiper.isBeginning) {
+                prevButton.classList.add("opacity-50", "cursor-not-allowed");
+                prevButton.disabled = true;
+            } else {
+                prevButton.classList.remove("opacity-50", "cursor-not-allowed");
+                prevButton.disabled = false;
+            }
+
+            if (swiper.isEnd) {
+                nextButton.classList.add("opacity-50", "cursor-not-allowed");
+                nextButton.disabled = true;
+            } else {
+                nextButton.classList.remove("opacity-50", "cursor-not-allowed");
+                nextButton.disabled = false;
+            }
+        }
+    });
+</script>
+
+    </div>
+ 
+
+    <style>
+        /* 🌟 Premium Container */
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 30px; /* Spacing between map & form */
+            max-width: 90%;
+            margin: auto;
+            padding: 30px;
+            background: #ffffff; /* White theme */
+            border-radius: 20px;
+            /* box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); Soft shadow */
+        }
+    
+        /* 🗺️ Map & Form Styling (Same height & width) */
+        #map, .form-container {
+            width: 50%; /* Equal width */
+            height: 500px; /* Equal height */
+            border-radius: 15px;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1); /* Soft gray shadow */
+            overflow: hidden;
+        }
+    
+        /* 📋 Clean Form Styling */
+        .form-container {
+            background: #f9f9f9; /* Light Gray */
+            padding: 30px;
+            color: #333; /* Dark text */
+            font-family: 'Poppins', sans-serif;
+            border-radius: 15px;
+        }
+    
+        /* 🎨 Form Elements */
+        .form-container h3 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .form-container label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+    
+        .form-container input, 
+        .form-container textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            color: #333;
+            font-size: 16px;
+        }
+    
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #ff6600; /* Orange Button */
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+    
+        .form-container button:hover {
+            background: #e65c00; /* Darker Orange */
+            transform: scale(1.05);
+        }
+    
+        /* 📱 Mobile View (Map below Form) */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+    
+            #map, .form-container {
+                width: 100%; /* Full width */
+                height: 500px; /* Adjust height */
+            }
+        }
+        
+    </style>
+    
+    <!-- ✅ Clean White Theme Container -->
+    <div class="container">
+        <!-- 🗺️ Map Section -->
+        <div id="map"></div>
+    
+        <!-- 📋 Form Section -->
+        <div class="form-container">
+            <h3>Get in Touch</h3>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+    
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+    
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
     
-    <!-- Swiper Script -->
     <script>
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: "auto",
-            spaceBetween: 10,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            loop: false, // Ensures no infinite loop
+        var map = L.map('map', {
+            center: [17.4971, 78.3591], // Miyapur, Hyderabad
+            zoom: 12,
+            dragging: false,        // Disable dragging
+            scrollWheelZoom: false, // Disable zooming with scroll
+            doubleClickZoom: false, // Disable double-click zoom
+            touchZoom: false,       // Disable pinch zoom on touchscreens
+            boxZoom: false,         // Disable zoom via box selection
+            keyboard: false         // Disable keyboard navigation
         });
+    
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+    
+        // Add a fixed marker
+        L.marker([17.4971, 78.3591]).addTo(map)
+            .bindPopup('Miyapur, Hyderabad, India')
+            .openPopup();
     </script>
+    
     
 
 
-
-
-    <footer style="margin-top: -50px;" class="bg-white text-gray-800 py-10">
+    <footer style="margin-top: -20px;" class="bg-white text-gray-800 py-10">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between px-4">
             <div class="flex-1 min-w-[250px] p-2">
                 <div class="flex items-center">
@@ -232,6 +450,19 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
     </script>
+   <script>
+    var map = L.map('map').setView([17.4971, 78.3591], 12); // Miyapur, Hyderabad
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([17.4971, 78.3591]).addTo(map) // Miyapur Marker
+        .bindPopup('Miyapur, Hyderabad, India')
+        .openPopup();
+</script>
+
+      
 </body>
 
 </html>
