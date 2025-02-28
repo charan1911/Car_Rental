@@ -6,48 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AutoRent{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    
-    <script>
-        
-
-        function toggleMenu() {
-            document.getElementById("mobile-menu").classList.toggle("hidden");
-        }
-
-        
-    </script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
-         /* Custom Styling */
-         .about-us {
-            
+        .about-us {
             gap: 20px;
             padding: 20px;
             justify-content: center;
         }
 
         .about-box {
-            background-color: bisque;
-            border: 1px solid black;
+            background-color: rgba(255, 106, 0, 0.100);
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 0px 20px rgba(23, 23, 23, 0.15);
             width: 300px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        
+        .clipped-image {
+            clip-path: inset(20% 0 15% 0);
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            color: #000000;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            user-select: none;
+        }
+
+        .swiper-button-prev {
+            left: 10px;
+        }
+
+        .swiper-button-next {
+            right: 10px;
+        }
     </style>
 </head>
 <body class="bg-white">
-
-    <!-- Navbar -->
-    <nav class="bg-white border-b border-slate-100" >
+    <!-- ✅ Responsive Navigation Bar -->
+    <nav class="bg-white border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 md:px-6">
             <div class="flex justify-between items-center h-20">
-                
-                <!-- Logo -->
                 <div class="flex items-center">
                     <svg class="h-6 w-6 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -55,311 +72,167 @@
                     <span class="font-semibold text-xl text-slate-800">AutoRent</span>
                 </div>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
-                    <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
-                    <a href="{% url 'signin' %}" style=" color: rgb(0, 0, 0);font-weight:normal; background-color: rgb(255, 106, 0); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
-                        Signin
-                    </a>                    
-                    <a href="{% url 'user_login' %}" style="color: rgb(0, 0, 0);font-weight: normal;; background-color: rgb(255, 106, 0); border-radius: 10px;padding: 10px;padding-left: 20px; padding-right: 20px;">
-                        Login
-                    </a>
-                </div>
-                
-
-                <!-- Mobile Menu Button -->
-                <button id="menu-toggle" class="md:hidden p-2 text-black">
-                    ☰
+                <!-- ✅ Mobile Menu Button -->
+                <button id="menu-btn" class="block md:hidden">
+                    <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
                 </button>
-                
+
+                <!-- ✅ Desktop Menu -->
+                <div id="menu" class="hidden md:flex items-center space-x-6">
+                    <a href="login.html" class="text-slate-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#" class="text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+                    <a href="{% url 'signin' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase no-underline">SignIn</a>
+                    <a href="{% url 'user_login' %}" class="bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase no-underline">Login</a>
+                </div>
             </div>
         </div>
 
-        <!-- Menu Button -->
-
-        <!-- Mobile Menu -->
-<div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 transition-transform transform -translate-y-full opacity-0">
-    <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium py-2">Home</a>
-    <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium py-2">About Us</a>
-
-    <div class="flex gap-2 mt-2">
-        <a href="{% url 'signin' %}" class="text-black font-normal bg-orange-500 rounded-lg px-4 py-2">
-            Signin
-        </a>
-        <a href="{% url 'user_login' %}" class="text-black font-normal bg-orange-500 rounded-lg px-4 py-2">
-            Login
-        </a>
-    </div>
-</div>
-
-        <!-- JavaScript -->
-<script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        let menu = document.getElementById("mobile-menu");
-        if (menu.classList.contains("hidden")) {
-            menu.classList.remove("hidden");
-            setTimeout(() => {
-                menu.classList.remove("-translate-y-full", "opacity-0");
-                menu.classList.add("translate-y-0", "opacity-100");
-            }, 10);
-        } else {
-            menu.classList.remove("translate-y-0", "opacity-100");
-            menu.classList.add("-translate-y-full", "opacity-0");
-            setTimeout(() => {
-                menu.classList.add("hidden");
-            }, 300); // Wait for animation to finish
-        }
-    });
-</script>
-        
+        <!-- ✅ Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 p-4 space-y-2">
+            <a href="login.html" class="block text-slate-600 hover:text-blue-600 font-medium">Home</a>
+            <a href="#" class="block text-slate-600 hover:text-blue-600 font-medium">About Us</a>
+            <a href="{% url 'signin' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg uppercase">SignIn</a>
+            <a href="{% url 'user_login' %}" class="block bg-orange-500 text-white font-bold text-center py-3 rounded-lg uppercase">Login</a>
+        </div>
     </nav>
-    <!-- <hr style="width: 100%; height: 1px; background-color: rgba(0, 0, 0, 0.25); border: none;"> -->
-    <div style="background-color:rgb(255, 255, 255);">
-        
-        <div style="margin-top: -11%; position: relative; display: flex; justify-content: center; align-items: center;">
-            <img style="width: 100%; height: auto; filter: brightness(90%);" 
-                 src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
-                 alt="Car Wallpaper" 
-                 class="clipped-image">
-            
-            <a href="#" style="
-                position: absolute;
-                top: 70%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: small;
-                color: white;
-                font-weight: bold;
-                background-color: #ff6600;
-                padding: 20px 30px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                text-transform: uppercase;
-                text-decoration: none;
-                display: inline-block;
-            ">
-                Explore
-            </a>
-        </div>
-        
-        <!-- About Us Section -->
-        <div class="text-center" style="margin-top: -5%;">
-            <h2 class="text-3xl font-bold" style="color: rgb(0, 0, 0);">About Us</h2>
-            <p class="text-gray-600" style="color: rgba(0, 0, 0, 0.738);">We provide secure, safe deals with users.</p>
-        </div>
-        
-        <div class="about-us p-6 space-y-6 text-center">
-            <div  class="about-box p-6 rounded-lg shadow-md w-full flex items-center gap-4" style="background-color: rgba(255, 106, 0, 0.100);">
-                <!-- Image Section -->
-                <img src="/static/images/premium.png" class="w-16 h-16 object-contain" alt="Luxury Cars">
-                
-                <!-- Text Section -->
-                <div >
-                    <h1  class="text-xl font-semibold text-gray-1000">Luxury Cars</h1>
-                    <p class="text-gray-700 mt-1">Experience premium luxury with exceptional comfort and style.</p>
-                </div>
-            </div>
 
-            <div class="about-box  p-6 rounded-lg shadow-md w-full flex items-center gap-4"    style="background-color: rgba(255, 106, 0, 0.100);">
-                <!-- Image Section -->
-                <img src="/static/images/hands.png" class="w-16 h-16 object-contain" alt="Luxury Cars">
-                
-                <!-- Text Section -->
-                <div >
-                    <h1 class="text-xl font-semibold text-gray-1000">Luxury Cars</h1>
-                <p class="text-gray-700 mt-2">Experience premium luxury with exceptional comfort and style.</p>
-                </div>
-            </div>
+    <!-- ✅ Responsive Hero Section -->
+    <div class="relative">
+        <img src="https://4kwallpapers.com/images/wallpapers/lamborghini-3840x2160-11125.jpeg" 
+             alt="Car Wallpaper" 
+             class="w-full h-[300px] md:h-[500px] object-cover brightness-90">
+        <a href="#" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white font-bold px-6 py-3 rounded-lg uppercase">Explore</a>
+    </div>
 
-            <div class="about-box  p-6 rounded-lg shadow-md w-full flex items-center gap-4" style="background-color: rgba(255, 106, 0, 0.100);">
-                <!-- Image Section -->
-                <img src="/static/images/24-hours.png" class="w-16 h-16 object-contain" alt="Luxury Cars"  >
-                
-                <!-- Text Section -->
-                <div >
-                    <h1 class="text-xl font-semibold text-gray-1000">24/7 Support</h1>
-                    <p class="text-gray-700 mt-2">We are available around the clock to assist you.</p>
-                </div>
-            </div>
-            
-            
-            
-            
-           
+    <!-- ✅ About Us Section -->
+    <div class="text-center py-8 px-4">
+        <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
+        <p class="text-gray-600">We provide secure, safe deals with users.</p>
+    </div>
+
+    <!-- ✅ Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 text-center">
+        <div class="flex flex-col items-center space-y-3">
+            <img src="/static/images/premium.png" class="w-16 h-16 object-contain" alt="Luxury Cars">
+            <h3 class="text-xl font-semibold text-gray-800">Luxury Cars</h3>
+            <p class="text-gray-700">Experience premium luxury with exceptional comfort and style.</p>
+        </div>
+        <div class="flex flex-col items-center space-y-3">
+            <img src="/static/images/hands.png" class="w-16 h-16 object-contain" alt="Safe Deals">
+            <h3 class="text-xl font-semibold text-gray-800">Safe Deals</h3>
+            <p class="text-gray-700">Secure and seamless transactions for peace of mind.</p>
+        </div>
+        <div class="flex flex-col items-center space-y-3">
+            <img src="/static/images/24-hours.png" class="w-16 h-16 object-contain" alt="24/7 Support">
+            <h3 class="text-xl font-semibold text-gray-800">24/7 Support</h3>
+            <p class="text-gray-700">We are available around the clock to assist you.</p>
         </div>
     </div>
 
-    <div class="text-center" style="margin-top: 0%;">
-        <h2 class="text-3xl font-bold" style="color: rgb(0, 0, 0);">Recently Launched</h2>
-        <p class="text-gray-600" style="color: rgba(0, 0, 0, 0.738);">Secure, seamless deals—our latest launch redefines trust!</p>
+    <!-- ✅ Recently Launched -->
+    <div class="text-center mt-12 px-4">
+        <h2 class="text-3xl font-bold text-gray-800">Recently Launched</h2>
+        <p class="text-gray-600">Secure, seamless deals—our latest launch redefines trust!</p>
     </div>
     
-    <div style="overflow-x: hidden; background-color: #ffffff; height: auto; padding: 20px;">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
-        <div class="swiper-container" style="max-width: 1400px; margin: auto; position: relative;">
+    <div class="overflow-hidden bg-white py-8 px-4">
+        <div class="swiper-container max-w-7xl mx-auto relative">
             <div class="swiper-wrapper">
                 {% for product in products %}
-                    <div class="swiper-slide" style="width: 280px; margin-right: 10px;">
-                        <div style="background-color: rgba(0, 0, 0, 0.064); border-radius: 8px; padding: 15px; text-align: center;">
-                            <h3>{{ product.name }}</h3>
-                            <img src="{{ product.picture.url }}" alt="{{ product.name }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
-                            <p>Price: ${{ product.price }}</p>
-                            <button style="background-color: rgb(255, 106, 0); color: white; padding: 10px; border: none; border-radius: 5px; cursor: not-allowed;" disabled>
-                                Buy Now
-                            </button>
-                        </div>
+                <div class="swiper-slide w-64">
+                    <div class="bg-gray-100 rounded-lg p-4 text-center">
+                        <h3>{{ product.name }}</h3>
+                        <img src="{{ product.picture.url }}" alt="{{ product.name }}" class="w-full h-40 object-cover rounded-lg my-2">
+                        <p>Price: ${{ product.price }}</p>
+                        <button class="bg-orange-500 text-white font-bold text-sm px-6 py-3 rounded-lg uppercase w-full">
+                            Buy Now
+                        </button>
                     </div>
+                </div>
                 {% empty %}
-                    <p style="color: black; text-align: center;">No recent products added.</p>
+                <p class="text-center text-gray-600">No recent products added.</p>
                 {% endfor %}
             </div>
-    
+            
             <!-- Navigation Buttons -->
-            <button class="nav-btn swiper-button-prev"></button>
-            <button class="nav-btn swiper-button-next"></button>
-    
-            <style>
-                .nav-btn {
-                    width: 60px;
-                    height: 60px;
-                    background-color: #ffffff; /* Dark premium color */
-                    border: none;
-                    border-radius: 6px; /* Slight rounding */
-                    color: #000000;
-                    font-size: 18px;
-                    font-weight: bold;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    cursor: pointer;
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 10;
-                    user-select: none;
-                }
-    
-                .swiper-button-prev {
-                    left: 10px;
-                }
-    
-                .swiper-button-next {
-                    right: 10px;
-                }
-            </style>
+            <button style="border-radius: 10px; padding: 30px;" class="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white p-2 z-10">
+                
+            </button>
+            <button style="border-radius: 10px; padding: 30px;" class="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white p-2  z-10">
+                
+            </button>
         </div>
-    
-        <script>
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: "auto",
-                spaceBetween: 10,  // 10px gap
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                loop: false
-            });
-        </script>
-    
     </div>
     
-    
+    <!-- Swiper Script -->
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: "auto",
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: false, // Ensures no infinite loop
+        });
+    </script>
     
 
 
-    
-    
-    
-    
 
-    <footer style="background-color: #ffffff; color: #000000; padding: 40px 20px; font-family: Arial, sans-serif;">
-        <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-between; padding: 10px;">
-            <!-- Left Section -->
-            <div style="flex: 1; min-width: 250px; padding: 10px;">
-                <!-- Logo -->
+
+    <footer style="margin-top: -50px;" class="bg-white text-gray-800 py-10">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between px-4">
+            <div class="flex-1 min-w-[250px] p-2">
                 <div class="flex items-center">
-                    <svg class="h-12 w-12 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="h-12 w-12 text-blue-600 mr-2" xmlns="http://www.w3.org/20000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span class="font-semibold text-slate-800" style="font-size: 20px;" onclick="showError()">AutoRent</span>
+                    <span class="font-semibold text-2xl">AutoRent</span>
                 </div>
-                <p style="margin-top: 10px;" onclick="showError()">For a better experience, download the AutoRent app now.</p>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <img src="/static/images/google-play.png" alt="Download on Google Play" style="height: 50px;" onclick="showError()">
-                    <img src="/static/images/app-store.png" alt="Download on App Store" style="height: 50px;" onclick="showError()">
+                <p class="mt-2">For a better experience, download the AutoRent app now.</p>
+                <div class="flex gap-2 mt-2">
+                    <img src="/static/images/google-play.png" alt="Download on Google Play" class="h-12">
+                    <img src="/static/images/app-store.png" alt="Download on App Store" class="h-12">
                 </div>
             </div>
-    
-            <!-- Middle Section -->
-            <div style="flex: 1; min-width: 250px;">
-                <p>&nbsp;</p>
-                <h3><b onclick="showError()">Company</b></h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Team</h3></li>
-                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">About Us</h3></li>
-                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Corporate</h3></li>
-                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Help & Support</h3></li>
-                    <li><h3 style="color: #000000; text-decoration: none;" onclick="showError()">Partner with Us</h3></li>
+            <div class="flex-1 min-w-[250px] p-2">
+                <h3><b>Company</b></h3>
+                <ul class="list-none p-0">
+                    <li><h3>Team</h3></li>
+                    <li><h3>About Us</h3></li>
+                    <li><h3>Corporate</h3></li>
+                    <li><h3>Help & Support</h3></li>
+                    <li><h3>Partner with Us</h3></li>
                 </ul>
             </div>
-    
-            <!-- Right Section -->
-            <div style="flex: 1; min-width: 250px;">
-                <p>&nbsp;</p>
-                <h4><b onclick="showError()">Available Locations</b></h4>
-                <p onclick="showError()">Miyapur, KPHB</p>
-                <h4 onclick="showError()">Follow Us</h4>
-                <!-- Social Media Links -->
-                <div style="display: flex; justify-content: left; gap: 18px; margin-top: 8px; margin-bottom: 20px;">
-                    <img src="/static/images/instagram.png" alt="Instagram" style="width: 30px;" onclick="showError()">
-                    <img src="/static/images/linkedin.png" alt="LinkedIn" style="width: 30px;" onclick="showError()">
-                    <img src="/static/images/facebook.png" alt="Facebook" style="width: 30px;" onclick="showError()">
-                    <img src="/static/images/twitter.png" alt="Twitter" style="width: 30px;" onclick="showError()">
+            <div class="flex-1 min-w-[250px] p-2">
+                <h4><b>Available Locations</b></h4>
+                <p>Miyapur, KPHB</p>
+                <h4>Follow Us</h4>
+                <div class="flex justify-start gap-4 mt-2 mb-5">
+                    <img src="/static/images/instagram.png" alt="Instagram" class="w-8">
+                    <img src="/static/images/linkedin.png" alt="LinkedIn" class="w-8">
+                    <img src="/static/images/facebook.png" alt="Facebook" class="w-8">
+                    <img src="/static/images/twitter.png" alt="Twitter" class="w-8">
                 </div>
             </div>
         </div>
-    
-        <!-- Copyright Section -->
-        <div style="text-align: center; margin-top: 20px; font-size: 14px;" onclick="showError()">
+        <div class="text-center mt-5 text-sm">
             &copy; 2025 AutoRent Limited. All rights reserved.
         </div>
     </footer>
-    
-    <!-- JavaScript for Error Message -->
-    
-    
-    
-    
-    
-     
-<style>
-    
-    
 
-  .clipped-image {
-    
-    clip-path: inset(20% 0 15% 0);
-
-  }
-</style>
-
-
-
-    
-    
-    
-
-
-    
-
+    <!-- ✅ Mobile Navigation Script -->
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
 </body>
+
 </html>
-
-
-
 
